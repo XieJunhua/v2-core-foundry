@@ -10,6 +10,7 @@ import "./interfaces/IERC20.sol";
 import "./interfaces/IWETH.sol";
 
 import "./UniswapV2Pair.sol";
+import { console2 } from "forge-std/src/console2.sol";
 
 contract UniswapV2Router01 is IUniswapV2Router01 {
     address public immutable factory;
@@ -56,6 +57,7 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
             } else {
                 uint256 amountAOptimal = UniswapV2Library.quote(amountBDesired, reserveB, reserveA);
                 assert(amountAOptimal <= amountADesired);
+
                 require(amountAOptimal >= amountAMin, "UniswapV2Router: INSUFFICIENT_A_AMOUNT");
                 (amountA, amountB) = (amountAOptimal, amountBDesired);
             }
@@ -129,6 +131,10 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         (uint256 amount0, uint256 amount1) = IUniswapV2Pair(pair).burn(to);
         (address token0,) = UniswapV2Library.sortTokens(tokenA, tokenB);
         (amountA, amountB) = tokenA == token0 ? (amount0, amount1) : (amount1, amount0);
+        console2.log("amountA:", amountA);
+        console2.log("amountAMin:", amountAMin);
+        console2.log("amountB:", amountB);
+        console2.log("amountBMin:", amountBMin);
         require(amountA >= amountAMin, "UniswapV2Router: INSUFFICIENT_A_AMOUNT");
         require(amountB >= amountBMin, "UniswapV2Router: INSUFFICIENT_B_AMOUNT");
     }

@@ -12,13 +12,6 @@ import "./RNT.sol";
  * 该合约提供了一个简单的DEX，用于兑换RNT
  */
 contract MyDex is IDex {
-    address public immutable factory;
-    // address public immutable USDT;
-
-    constructor(address _factory) {
-        factory = _factory;
-    }
-
     receive() external payable { }
 
     /**
@@ -28,7 +21,7 @@ contract MyDex is IDex {
      * @param minBuyAmount 要求最低兑换到的 buyToken 数量
      */
     function sellETH(address buyToken, uint256 minBuyAmount) external payable {
-        assert(msg.value > 0); // only accept ETH from the WETH contract
+        assert(msg.value > 0);
         RNT(buyToken).mint(msg.sender, minBuyAmount);
     }
 

@@ -5,6 +5,7 @@ pragma solidity ^0.8.25;
 import "../interfaces/IUniswapV2Pair.sol";
 
 import "./SafeMath.sol";
+import { UniswapV2Pair } from "../UniswapV2Pair.sol";
 
 library UniswapV2Library {
     using SafeMath for uint256;
@@ -19,6 +20,8 @@ library UniswapV2Library {
     // calculates the CREATE2 address for a pair without making any external calls
     function pairFor(address factory, address tokenA, address tokenB) internal pure returns (address pair) {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
+        bytes memory bytecode = type(UniswapV2Pair).creationCode;
+        bytes32 result = keccak256(abi.encodePacked(bytecode));
         pair = address(
             uint160(
                 uint256(
@@ -27,12 +30,13 @@ library UniswapV2Library {
                             hex"ff",
                             factory,
                             keccak256(abi.encodePacked(token0, token1)),
-                            hex"ff8731c821897201f4a720a779e83100ecd02ac9cc5794276c308ba5bf326c01"
+                            hex"d2c9ff45900cfff66631edc935013e1a42a4a1c5ad11a98e5d48f192c5eca55b"
                         )
                     )
                 )
             )
         );
+        // bytecode
         // hex"4300085ab4d1b9f06dcf68af6f6c3c49fa73e372704065764017b9c31ebb672a" // init code hash
     }
 

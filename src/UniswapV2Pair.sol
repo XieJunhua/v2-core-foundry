@@ -9,6 +9,7 @@ import "./libraries/UQ112x112.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/IUniswapV2Factory.sol";
 import "./interfaces/IUniswapV2Callee.sol";
+import { console2 } from "forge-std/src/console2.sol";
 
 contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
     using SafeMath for uint256;
@@ -124,7 +125,8 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
 
         bool feeOn = _mintFee(_reserve0, _reserve1);
         uint256 _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in
-            // _mintFee
+        // _mintFee
+        console2.log("_totalSupply: ", _totalSupply);
         if (_totalSupply == 0) {
             liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
             _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
