@@ -21,7 +21,8 @@ contract MyDex is IDex {
      * @param minBuyAmount 要求最低兑换到的 buyToken 数量
      */
     function sellETH(address buyToken, uint256 minBuyAmount) external payable {
-        assert(msg.value > 0);
+        assert(msg.value > 0); // only accept ETH from the WETH contract
+
         RNT(buyToken).mint(msg.sender, minBuyAmount);
     }
 
